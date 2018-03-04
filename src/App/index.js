@@ -1,22 +1,16 @@
 import React, { Component } from 'react'
 import { BrowserRouter, Link } from 'react-router-dom'
 import { Route } from 'react-router'
-import './App.css'
+import './style.css'
 
-import Counter from './Counter'
-import Switcher from './Switcher'
-import CatRace from './CatRace'
+import Switcher from '../Switcher'
+import CatRace from '../CatRace'
 
 const routes = [
   {
     path: '/',
     title: 'Home',
     component: null,
-  },
-  {
-    path: '/counter',
-    title: 'Counter',
-    component: Counter
   },
   {
     path: '/switcher',
@@ -38,10 +32,10 @@ class App extends Component {
           <header className="App-header">
             <h1 className="App-title">React Motion</h1>
           </header>
-          <ul>
+          <ul className='menu-l'>
             {routes.map((item, key) =>
-              <li key={key}>
-                <Link to={item.path}>{item.title}</Link>
+              <li key={key} className='menu-i'>
+                <Link className='menu-i-a' to={item.path}>{item.title}</Link>
               </li>
             )}
           </ul>
