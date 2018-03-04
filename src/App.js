@@ -5,6 +5,7 @@ import './App.css'
 
 import Counter from './Counter'
 import Switcher from './Switcher'
+import CatRace from './CatRace'
 
 const routes = [
   {
@@ -21,6 +22,11 @@ const routes = [
     path: '/switcher',
     title: 'Switcher',
     component: Switcher
+  },
+  {
+    path: '/cat-race',
+    title: 'Cat Race',
+    component: CatRace
   },
 ]
 
