@@ -35,7 +35,7 @@ class App extends Component {
           <ul className='menu-l'>
             {routes.map((item, key) =>
               <li key={key} className='menu-i'>
-                <Link className='menu-i-a' to={item.path}>{item.title}</Link>
+                <Link className='menu-i-a' to={`/react-motion-etudes${item.path}`}>{item.title}</Link>
               </li>
             )}
           </ul>
