@@ -6,19 +6,21 @@ import './style.css'
 import Switcher from '../Switcher'
 import CatRace from '../CatRace'
 
+const urlPrefix = '/react-motion-etudes'
+
 const routes = [
   {
-    path: '/',
+    path: `${urlPrefix}`,
     title: 'Home',
     component: null,
   },
   {
-    path: '/switcher',
+    path: `${urlPrefix}/switcher`,
     title: 'Switcher',
     component: Switcher
   },
   {
-    path: '/cat-race',
+    path: `${urlPrefix}/cat-race`,
     title: 'Cat Race',
     component: CatRace
   },
@@ -35,7 +37,7 @@ class App extends Component {
           <ul className='menu-l'>
             {routes.map((item, key) =>
               <li key={key} className='menu-i'>
-                <Link className='menu-i-a' to={`/react-motion-etudes${item.path}`}>{item.title}</Link>
+                <Link className='menu-i-a' to={item.path}>{item.title}</Link>
               </li>
             )}
           </ul>
