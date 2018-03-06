@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import range from 'lodash/fp/range'
 import shuffle from 'lodash/fp/shuffle'
-import { StaggeredMotion, spring } from 'react-motion'
+import { StaggeredMotion, spring, presets } from 'react-motion'
 
 import './style.css'
+
+const PRESET_NONE = 'none';
 
 class CatRace extends Component {
 
@@ -18,7 +20,10 @@ class CatRace extends Component {
     this.renderCats = this.renderCats.bind(this)
     this.initialCatPosition = this.initialCatPosition.bind(this)
     this.updateStiffness = this.updateStiffness.bind(this)
-    this.updatedamping = this.updatedamping.bind(this)
+    this.updateDamping = this.updateDamping.bind(this)
+    this.updateSpringconfig = this.updateSpringconfig.bind(this)
+    this.renderPresets = this.renderPresets.bind(this)
+    this.getSpringConfig = this.getSpringConfig.bind(this)
         
     this.state = {
       catPosition: this.initialCatPosition(),
@@ -26,6 +31,7 @@ class CatRace extends Component {
         stiffness: 170,
         damping: 26,
       },
+      preset: PRESET_NONE,
     }
   }
 
@@ -61,8 +67,8 @@ class CatRace extends Component {
       i === 0
       ? this.state.catPosition
       : {
-        x: spring(prevStyles[i - 1].x, this.state.springConfig),
-        y: spring(prevStyles[i - 1].y, this.state.springConfig),
+        x: spring(prevStyles[i - 1].x, this.getSpringConfig()),
+        y: spring(prevStyles[i - 1].y, this.getSpringConfig()),
       }
     )
     return nextStyles
@@ -73,16 +79,35 @@ class CatRace extends Component {
       springConfig: {
         ...this.state.springConfig,
         stiffness: parseInt(e.target.value, 10),
-      }
+      },
+      preset: PRESET_NONE
     })
   }
 
-  updatedamping (e) {
+  updateDamping (e) {
     this.setState({
       springConfig: {
         ...this.state.springConfig,
         damping: parseInt(e.target.value, 10),
-      }
+      },
+      preset: PRESET_NONE
+    })
+  }
+
+  getSpringConfig (preset) {
+    preset = preset || this.state.preset
+    if (preset === PRESET_NONE) {
+      return this.state.springConfig
+    }
+    return presets[preset]
+  }
+
+  updateSpringconfig (e) {
+    const preset = e.target.value
+    const springConfig = this.getSpringConfig(preset)
+    this.setState({
+      springConfig,
+      preset,
     })
   }
 
@@ -99,6 +124,24 @@ class CatRace extends Component {
           />
         )}
       </div>
+    )
+  }
+
+  renderPresets () {
+    const keys = Object.keys(presets)
+    return (
+      <select
+        className='catConfig-preset-l'
+        onChange={this.updateSpringconfig}
+        value={this.state.preset}
+      >
+        <option className='catConfig-preset-i' value={PRESET_NONE} key={PRESET_NONE}/>
+        {keys.map((preset) =>
+          <option className='catConfig-preset-i' value={preset} key={preset}>
+            {preset}
+          </option>
+        )}
+      </select>
     )
   }
 
@@ -138,10 +181,13 @@ class CatRace extends Component {
                 type='range'
                 min={0}
                 max={40}
-                onChange={this.updatedamping}
+                onChange={this.updateDamping}
                 value={this.state.springConfig.damping}
               />
             </label>
+          </li>
+          <li className='catConfig-i'>
+            {this.renderPresets()}
           </li>
         </ul>
       </div>

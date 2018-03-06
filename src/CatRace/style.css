@@ -77,3 +77,8 @@
 .catConfig-input {
   margin: 10px 0 0 0;
 }
+
+.catConfig-preset-l {
+  width: 100%;
+  text-align: center;
+}
