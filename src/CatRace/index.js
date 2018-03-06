@@ -28,10 +28,10 @@ class CatRace extends Component {
     this.state = {
       catPosition: this.initialCatPosition(),
       springConfig: {
-        stiffness: 170,
-        damping: 26,
+        stiffness: presets.gentle.stiffness,
+        damping: presets.gentle.damping,
       },
-      preset: PRESET_NONE,
+      preset: 'gentle',
     }
   }
 
