@@ -46,3 +46,34 @@
 .cat-head-7 {
   background-image: url('7.jpg');
 }
+
+.catConfig-l {
+  display: block;
+  position: relative;
+  z-index: 200;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 0px 10px 10px 10px;
+  margin: 20px 10px 0 0;
+  float: right;
+  border: 1px solid #efefef;
+}
+
+.catConfig-i {
+  list-style: none;
+  margin: 0;
+  padding: 20px 0 0 0;
+}
+
+.catConfig-label--name {
+  float: left;
+  text-align: left;
+}
+
+.catConfig-label--value {
+  float: right;
+  text-align: right;
+}
+
+.catConfig-input {
+  margin: 10px 0 0 0;
+}

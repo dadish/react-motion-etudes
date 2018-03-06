@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import range from 'lodash/fp/range'
 import shuffle from 'lodash/fp/shuffle'
-import { StaggeredMotion, spring, presets } from 'react-motion'
+import { StaggeredMotion, spring } from 'react-motion'
 
 import './style.css'
 
@@ -17,12 +17,22 @@ class CatRace extends Component {
     this.interpolatedStyles = this.interpolatedStyles.bind(this)
     this.renderCats = this.renderCats.bind(this)
     this.initialCatPosition = this.initialCatPosition.bind(this)
+    this.updateStiffness = this.updateStiffness.bind(this)
+    this.updatedamping = this.updatedamping.bind(this)
         
-    this.state = this.initialCatPosition()
+    this.state = {
+      catPosition: this.initialCatPosition(),
+      springConfig: {
+        stiffness: 170,
+        damping: 26,
+      },
+    }
   }
 
   handleMouseMove (e) {
-    this.setState({ x: e.clientX, y: e.clientY })
+    this.setState({
+      catPosition: { x: e.clientX, y: e.clientY }
+    })
   }
 
   handleTouchMove (e) {
@@ -49,13 +59,31 @@ class CatRace extends Component {
   interpolatedStyles (prevStyles) {
     const nextStyles = prevStyles.map((_, i) =>
       i === 0
-      ? this.state
+      ? this.state.catPosition
       : {
-        x: spring(prevStyles[i - 1].x, presets.gentle),
-        y: spring(prevStyles[i - 1].y, presets.gentle),
+        x: spring(prevStyles[i - 1].x, this.state.springConfig),
+        y: spring(prevStyles[i - 1].y, this.state.springConfig),
       }
     )
     return nextStyles
+  }
+
+  updateStiffness (e) {
+    this.setState({
+      springConfig: {
+        ...this.state.springConfig,
+        stiffness: parseInt(e.target.value, 10),
+      }
+    })
+  }
+
+  updatedamping (e) {
+    this.setState({
+      springConfig: {
+        ...this.state.springConfig,
+        damping: parseInt(e.target.value, 10),
+      }
+    })
   }
 
   renderCats (styles) {
@@ -63,7 +91,7 @@ class CatRace extends Component {
       <div className='cat-heads'>
         {styles.map(({ x, y }, key) =>
           <div
-            className={`cat-head cat-head-${key + 1}`}
+            className={`cat-head cat-head-${this.items[key] + 1}`}
             key={key}
             style={{
               transform: `translate(${x}px, ${y}px)`
@@ -81,6 +109,41 @@ class CatRace extends Component {
         <StaggeredMotion styles={this.interpolatedStyles} defaultStyles={this.items.map(this.initialCatPosition)}>
           {this.renderCats}
         </StaggeredMotion>
+        <ul className='catConfig-l'>
+          <h3>Spring Config</h3>
+          <li className='catConfig-i'>
+            <label className='catConfig-labal'>
+              <div>
+                <div className='catConfig-label--name'>Stiffness</div>
+                <div className='catConfig-label--value'>{this.state.springConfig.stiffness}</div>
+              </div>
+              <input
+                className='catConfig-input catConfig-input--stiffness'
+                type='range'
+                min={0}
+                max={300}
+                onChange={this.updateStiffness}
+                value={this.state.springConfig.stiffness}
+              />
+            </label>
+          </li>
+          <li className='catConfig-i'>
+            <label className='catConfig-labal'>
+              <div>
+                <div className='catConfig-label--name'>Damping</div>
+                <div className='catConfig-label--value'>{this.state.springConfig.damping}</div>
+              </div>
+              <input
+                className='catConfig-input catConfig-input--damping'
+                type='range'
+                min={0}
+                max={40}
+                onChange={this.updatedamping}
+                value={this.state.springConfig.damping}
+              />
+            </label>
+          </li>
+        </ul>
       </div>
     )
   }
