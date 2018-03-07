@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { BrowserRouter, Link } from 'react-router-dom'
-import { Route } from 'react-router'
+import { Route, Redirect } from 'react-router'
 import './style.css'
 
 import GoTo from '../GoTo'
@@ -11,8 +11,8 @@ const urlPrefix = '/react-motion-etudes'
 const routes = [
   {
     path: `${urlPrefix}`,
-    title: 'Home',
-    component: null,
+    title: null,
+    component: () => <Redirect to={`${urlPrefix}/go-to`} />,
   },
   {
     path: `${urlPrefix}/go-to`,
@@ -42,7 +42,7 @@ class App extends Component {
               </li>
             )}
           </ul>
-          {routes.map((item, key) => item.component ? <Route path={item.path} component={item.component} key={key} /> : null)}
+          {routes.map((item, key) => <Route path={item.path} component={item.component} key={key} exact />)}
         </div>
       </BrowserRouter>
     );
