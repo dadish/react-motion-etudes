@@ -64,7 +64,7 @@ class CatRace extends SpringConfigComponent {
               transform: `translate(${x}px, ${y}px)`
             }}
           />
-        )}
+        ).reverse()}
       </div>
     )
   }
