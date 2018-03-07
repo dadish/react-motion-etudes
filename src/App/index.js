@@ -3,7 +3,7 @@ import { BrowserRouter, Link } from 'react-router-dom'
 import { Route } from 'react-router'
 import './style.css'
 
-import Switcher from '../Switcher'
+import GoTo from '../GoTo'
 import CatRace from '../CatRace'
 
 const urlPrefix = '/react-motion-etudes'
@@ -15,9 +15,9 @@ const routes = [
     component: null,
   },
   {
-    path: `${urlPrefix}/switcher`,
-    title: 'Switcher',
-    component: Switcher
+    path: `${urlPrefix}/go-to`,
+    title: 'Go To',
+    component: GoTo
   },
   {
     path: `${urlPrefix}/cat-race`,
@@ -27,6 +27,7 @@ const routes = [
 ]
 
 class App extends Component {
+
   render() {
     return (
       <BrowserRouter>

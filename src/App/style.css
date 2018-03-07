@@ -27,3 +27,9 @@
   display: inline-block;
   padding: 15px;
 }
+
+.demo-desc {
+  color: #aaa;
+  font-style: italic;
+  font-size: 0.85rem;
+}

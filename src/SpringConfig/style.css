@@ -1,0 +1,35 @@
+.springConfig-l {
+  display: block;
+  position: relative;
+  z-index: 200;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 0px 10px 10px 10px;
+  margin: 20px 10px 0 0;
+  float: right;
+  border: 1px solid #efefef;
+}
+
+.springConfig-i {
+  list-style: none;
+  margin: 0;
+  padding: 20px 0 0 0;
+}
+
+.springConfig-label--name {
+  float: left;
+  text-align: left;
+}
+
+.springConfig-label--value {
+  float: right;
+  text-align: right;
+}
+
+.springConfig-input {
+  margin: 10px 0 0 0;
+}
+
+.springConfig-preset-l {
+  width: 100%;
+  text-align: center;
+}

@@ -1,13 +1,13 @@
-import React, { Component } from 'react'
+import React from 'react'
 import range from 'lodash/fp/range'
 import shuffle from 'lodash/fp/shuffle'
-import { StaggeredMotion, spring, presets } from 'react-motion'
+import { StaggeredMotion, spring } from 'react-motion'
+
+import SpringConfigComponent from '../SpringConfig'
 
 import './style.css'
 
-const PRESET_NONE = 'none';
-
-class CatRace extends Component {
+class CatRace extends SpringConfigComponent {
 
   constructor (props) {
     super(props)
@@ -18,26 +18,12 @@ class CatRace extends Component {
     this.handleTouchMove = this.handleTouchMove.bind(this)
     this.interpolatedStyles = this.interpolatedStyles.bind(this)
     this.renderCats = this.renderCats.bind(this)
-    this.initialCatPosition = this.initialCatPosition.bind(this)
-    this.updateStiffness = this.updateStiffness.bind(this)
-    this.updateDamping = this.updateDamping.bind(this)
-    this.updateSpringconfig = this.updateSpringconfig.bind(this)
-    this.renderPresets = this.renderPresets.bind(this)
-    this.getSpringConfig = this.getSpringConfig.bind(this)
-        
-    this.state = {
-      catPosition: this.initialCatPosition(),
-      springConfig: {
-        stiffness: presets.gentle.stiffness,
-        damping: presets.gentle.damping,
-      },
-      preset: 'gentle',
-    }
   }
 
   handleMouseMove (e) {
     this.setState({
-      catPosition: { x: e.clientX, y: e.clientY }
+      x: e.clientX,
+      y: e.clientY,
     })
   }
 
@@ -55,60 +41,16 @@ class CatRace extends Component {
     window.removeEventListener('touchmove', this.handleTouchMove)
   }
 
-  initialCatPosition () {
-    return {
-      x: window.innerWidth / 2,
-      y: window.innerHeight /2
-    }
-  }
-
   interpolatedStyles (prevStyles) {
     const nextStyles = prevStyles.map((_, i) =>
       i === 0
-      ? this.state.catPosition
+      ? this.state
       : {
         x: spring(prevStyles[i - 1].x, this.getSpringConfig()),
         y: spring(prevStyles[i - 1].y, this.getSpringConfig()),
       }
     )
     return nextStyles
-  }
-
-  updateStiffness (e) {
-    this.setState({
-      springConfig: {
-        ...this.state.springConfig,
-        stiffness: parseInt(e.target.value, 10),
-      },
-      preset: PRESET_NONE
-    })
-  }
-
-  updateDamping (e) {
-    this.setState({
-      springConfig: {
-        ...this.state.springConfig,
-        damping: parseInt(e.target.value, 10),
-      },
-      preset: PRESET_NONE
-    })
-  }
-
-  getSpringConfig (preset) {
-    preset = preset || this.state.preset
-    if (preset === PRESET_NONE) {
-      return this.state.springConfig
-    }
-    return presets[preset]
-  }
-
-  updateSpringconfig (e) {
-    const preset = e.target.value
-    const springConfig = this.getSpringConfig(preset)
-    this.setState({
-      springConfig,
-      preset,
-    })
   }
 
   renderCats (styles) {
@@ -127,69 +69,15 @@ class CatRace extends Component {
     )
   }
 
-  renderPresets () {
-    const keys = Object.keys(presets)
-    return (
-      <select
-        className='catConfig-preset-l'
-        onChange={this.updateSpringconfig}
-        value={this.state.preset}
-      >
-        <option className='catConfig-preset-i' value={PRESET_NONE} key={PRESET_NONE}/>
-        {keys.map((preset) =>
-          <option className='catConfig-preset-i' value={preset} key={preset}>
-            {preset}
-          </option>
-        )}
-      </select>
-    )
-  }
-
   render () {
     return (
       <div className='catRace-container'>
-        <h1>Cat Race!</h1>
-        <StaggeredMotion styles={this.interpolatedStyles} defaultStyles={this.items.map(this.initialCatPosition)}>
+        <h1 className='demo-title'>Cat Race!</h1>
+        <div className='demo-desc'>Move the mouse and cats will follow.</div>
+        <StaggeredMotion styles={this.interpolatedStyles} defaultStyles={this.items.map(this.getCenterPosition)}>
           {this.renderCats}
         </StaggeredMotion>
-        <ul className='catConfig-l'>
-          <h3>Spring Config</h3>
-          <li className='catConfig-i'>
-            <label className='catConfig-labal'>
-              <div>
-                <div className='catConfig-label--name'>Stiffness</div>
-                <div className='catConfig-label--value'>{this.state.springConfig.stiffness}</div>
-              </div>
-              <input
-                className='catConfig-input catConfig-input--stiffness'
-                type='range'
-                min={0}
-                max={300}
-                onChange={this.updateStiffness}
-                value={this.state.springConfig.stiffness}
-              />
-            </label>
-          </li>
-          <li className='catConfig-i'>
-            <label className='catConfig-labal'>
-              <div>
-                <div className='catConfig-label--name'>Damping</div>
-                <div className='catConfig-label--value'>{this.state.springConfig.damping}</div>
-              </div>
-              <input
-                className='catConfig-input catConfig-input--damping'
-                type='range'
-                min={0}
-                max={40}
-                onChange={this.updateDamping}
-                value={this.state.springConfig.damping}
-              />
-            </label>
-          </li>
-          <li className='catConfig-i'>
-            {this.renderPresets()}
-          </li>
-        </ul>
+        {this.renderSpringConfig()}
       </div>
     )
   }
