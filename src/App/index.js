@@ -5,6 +5,7 @@ import './style.css'
 
 import GoTo from '../GoTo'
 import CatRace from '../CatRace'
+import Beads from '../Beads'
 
 const urlPrefix = '/react-motion-etudes'
 
@@ -23,6 +24,11 @@ const routes = [
     path: `${urlPrefix}/cat-race`,
     title: 'Cat Race',
     component: CatRace
+  },
+  {
+    path: `${urlPrefix}/beads`,
+    title: 'Beads',
+    component: Beads
   },
 ]
 
