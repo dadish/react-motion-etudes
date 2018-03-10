@@ -8,3 +8,7 @@
   left: 0;
   box-sizing: border-box;
 }
+
+.bead-i--active {
+  z-index: 300;
+}
