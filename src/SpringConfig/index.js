@@ -11,6 +11,7 @@ class SpringConfig extends Component {
     super(props)
 
     this.state = {
+      configOpen: true,
       stiffness: presets.gentle.stiffness,
       damping: presets.gentle.damping,
       preset: 'gentle',
@@ -23,7 +24,7 @@ class SpringConfig extends Component {
     this.updateDamping = this.updateDamping.bind(this)
     this.updateSpringConfig = this.updateSpringConfig.bind(this)
     this.getSpringConfig = this.getSpringConfig.bind(this)
-    this.childrenWithProps = this.childrenWithProps.bind(this)
+    this.handleIconClick = this.handleIconClick.bind(this)
   }
 
   getCenterPosition () {
@@ -72,6 +73,12 @@ class SpringConfig extends Component {
     })
   }
 
+  handleIconClick () {
+    this.setState({
+      configOpen: !this.state.configOpen
+    })
+  }
+
   renderPresets () {
     const keys = Object.keys(presets)
     return (
@@ -90,21 +97,17 @@ class SpringConfig extends Component {
     )
   }
 
-  childrenWithProps () {
-    return React.Children.map(this.props.children, (child) => {
-      if (!child) {
-        return null
-      }
-      return React.cloneElement(child, {...child.props, ...this.state})
-    })
-  }
-
   renderSpringConfig () {
     return (
-      <div className='springConfig-contaienr'>
-        {this.childrenWithProps()}
-        <ul className='springConfig-l'>
-          <h3>Spring Config</h3>
+      <div className='springConfig-container'>
+        <i
+          className={`${this.state.configOpen ? 'icon-close' : 'icon-cog'} icon-close-open`}
+          onClick={this.handleIconClick}
+        />
+        <ul className='springConfig-l'
+          style={{ display: this.state.configOpen ? 'block' : 'none' }}
+        >
+          <h3 className='springConfig-title'>Spring Config</h3>
           <li className='springConfig-i'>
             <label className='springConfig-labal'>
               <div>
