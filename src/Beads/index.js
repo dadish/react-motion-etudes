@@ -1,4 +1,5 @@
 import React from 'react'
+import shuffle from 'lodash/fp/shuffle'
 
 import './style.css'
 
@@ -31,6 +32,7 @@ class Beads extends SpringConfigComponent {
     this.getBasePosition = this.getBasePosition.bind(this)
     this.renderBeads = this.renderBeads.bind(this)
     this.handleReset = this.handleReset.bind(this)
+    this.handleShuffle = this.handleShuffle.bind(this)
   }
 
   handleBeadMove (color, positionX, positionY) {
@@ -65,6 +67,12 @@ class Beads extends SpringConfigComponent {
         items: [...colors]
       })
     }
+  }
+
+  handleShuffle () {
+    this.setState({
+      items: shuffle([...colors])
+    })
   }
 
   updateBeadIndex (currectIndex, newIndex) {
@@ -113,6 +121,7 @@ class Beads extends SpringConfigComponent {
         <h1 className='demo-title'>Beads</h1>
         <div className='demo-desc'>Drag n Drop the beads to rearrange.</div>
         <button disabled={!this.isMuted()} className='beads-reset' onClick={this.handleReset}>Reset</button>
+        <button className='beads-reset' onClick={this.handleShuffle}>Shuffle</button>
         <div className='bead-l'>
           {this.renderBeads()}
         </div>
