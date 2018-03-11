@@ -12,3 +12,7 @@
 .bead-i--active {
   z-index: 300;
 }
+
+.beads-reset {
+  margin-top: 1rem;
+}

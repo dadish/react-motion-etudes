@@ -5,6 +5,15 @@ import './style.css'
 import SpringConfigComponent from '../SpringConfig'
 import Bead from './Bead'
 
+const colors = [
+  '#001f3f','#0074D9','#7FDBFF',
+  '#39CCCC','#3D9970','#2ECC40',
+  '#01FF70','#FFDC00','#FF851B',
+  '#FF4136','#85144b','#F012BE',
+  '#B10DC9','#111111','#AAAAAA',
+  '#DDDDDD',
+]
+
 class Beads extends SpringConfigComponent {
 
   constructor (props) {
@@ -13,14 +22,7 @@ class Beads extends SpringConfigComponent {
     this.state = {
       ...this.state,
       configOpen: false,
-      items: [
-        '#001f3f','#0074D9','#7FDBFF',
-        '#39CCCC','#3D9970','#2ECC40',
-        '#01FF70','#FFDC00','#FF851B',
-        '#FF4136','#85144b','#F012BE',
-        '#B10DC9','#111111','#AAAAAA',
-        '#DDDDDD',
-      ]
+      items: [...colors]
     }
 
     this.handleBeadMove = this.handleBeadMove.bind(this)
@@ -28,6 +30,7 @@ class Beads extends SpringConfigComponent {
     this.getPositionsForBeads = this.getPositionsForBeads.bind(this)
     this.getBasePosition = this.getBasePosition.bind(this)
     this.renderBeads = this.renderBeads.bind(this)
+    this.handleReset = this.handleReset.bind(this)
   }
 
   handleBeadMove (color, positionX, positionY) {
@@ -47,10 +50,27 @@ class Beads extends SpringConfigComponent {
     this.updateBeadIndex(currectIndex, newIndex)
   }
 
+  isMuted () {
+    for (let i = 0; i < colors.length; i += 1) {
+      if (this.state.items[i] !== colors[i]) {
+        return true
+      }
+    }
+    return false
+  }
+
+  handleReset () {
+    if (this.isMuted()) {
+      this.setState({
+        items: [...colors]
+      })
+    }
+  }
+
   updateBeadIndex (currectIndex, newIndex) {
     const items = [...this.state.items]
     const item = items.splice(currectIndex, 1)
-    items.splice(newIndex, 0, item)
+    items.splice(newIndex, 0, ...item)
     this.setState({ items })
   }
 
@@ -92,6 +112,7 @@ class Beads extends SpringConfigComponent {
       <div className='beads-container'>
         <h1 className='demo-title'>Beads</h1>
         <div className='demo-desc'>Drag n Drop the beads to rearrange.</div>
+        <button disabled={!this.isMuted()} className='beads-reset' onClick={this.handleReset}>Reset</button>
         <div className='bead-l'>
           {this.renderBeads()}
         </div>
