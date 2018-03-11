@@ -40,6 +40,9 @@ class App extends Component {
         <div className="App">
           <header className="App-header">
             <h1 className="App-title">React Motion</h1>
+            <a href='https://github.com/dadish/react-motion-etudes'>
+              <i className='icon-github' />
+            </a>
           </header>
           <ul className='menu-l'>
             {routes.map((item, key) =>

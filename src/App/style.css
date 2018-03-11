@@ -34,3 +34,17 @@
   font-style: italic;
   font-size: 0.85rem;
 }
+
+.icon-github {
+  position: absolute;
+  right: 0px;
+  top: 20px;
+  height: 50px;
+  line-height: 50px;
+  color: #ddd;
+  font-size: 2rem;
+}
+
+.icon-github:hover {
+  color: #fff;
+}
